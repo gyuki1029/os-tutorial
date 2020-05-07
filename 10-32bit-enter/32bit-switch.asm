@@ -1,5 +1,8 @@
 [bits 16]
 switch_to_pm:
+    mov bx, MSG_SWITCH_TO_PM_START
+    call print ; This will be written after the BIOS messages
+
     cli ; 1. disable interrupts
     lgdt [gdt_descriptor] ; 2. load the GDT descriptor
     mov eax, cr0
@@ -20,3 +23,12 @@ init_pm: ; we are now using 32-bit instructions
     mov esp, ebp
 
     call BEGIN_PM ; 7. Call a well-known label with useful code
+
+MSG_SWITCH_TO_PM_START db "Start switch_to_pm", 0
+MSG_SWITCH_TO_PM_END db "End switch_to_pm", 0
+
+MSG_SWITCH_INIT_PM_START db "Start init_pm", 0
+MSG_SWITCH_INIT_PM_END db "End init_pm", 0
+
+hello: db "Hello world!",0
+
