@@ -19,11 +19,15 @@ disk_load:
     ; caller sets it up for us, and it is actually the standard location for int 13h
     int 0x13      ; BIOS interrupt
     jc disk_error ; if error (stored in the carry bit)
-
+   
     pop dx
     cmp al, dh    ; BIOS also sets 'al' to the # of sectors read. Compare it.
     jne sectors_error
     popa
+
+    mov bx, SUCCESS
+    call print
+ 
     ret
 
 
@@ -44,3 +48,4 @@ disk_loop:
 
 DISK_ERROR: db "Disk read error", 0
 SECTORS_ERROR: db "Incorrect number of sectors read", 0
+SUCCESS: db "Successed", 0
